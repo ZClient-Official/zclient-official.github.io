@@ -62,43 +62,36 @@
     </div>
 
     <script>
-        // Your specific Supabase Details from your screenshots
-        const SUPABASE_URL = 'https://bfddlxzuopacmxafdayn.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_dsNXgQktKqzg1T47_qBfWA_y3mxsHSD';
-        
-        // Initialize the connection
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // From your screenshot 'image_e93d0b.png'
+    const SUPABASE_URL = 'https://bfddlxzuopacmxafdayn.supabase.co'; 
+    
+    // From your screenshot 'image_e94128.png' (The Publishable Key)
+    const SUPABASE_KEY = 'sb_publishable_dsNXgQktKqzg1T47_qBfWA_y3mxsHSD'; 
 
-        async function handleLogin() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('error-msg');
-            const btn = document.getElementById('login-btn');
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            // Reset UI
-            errorDiv.innerText = "";
-            btn.innerText = "VERIFYING...";
+    async function handleLogin() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('login-btn');
+        const errorDiv = document.getElementById('error-msg');
 
-            // Send request to your Supabase Database
-            const { data, error } = await _supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
+        btn.innerText = "VERIFYING...";
 
-            if (error) {
-                errorDiv.innerText = "DENIED: " + error.message;
-                btn.innerText = "AUTHENTICATE";
-            } else {
-                // Success!
-                document.getElementById('auth-form').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-            }
+        const { data, error } = await _supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        if (error) {
+            alert("ACCESS DENIED: " + error.message);
+            btn.innerText = "AUTHENTICATE";
+        } else {
+            // This shows the hidden dashboard
+            document.getElementById('auth-form').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
         }
-
-        async function handleLogout() {
-            await _supabase.auth.signOut();
-            location.reload(); // Refresh the page to show the login box again
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
