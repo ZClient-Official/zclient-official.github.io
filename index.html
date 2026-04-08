@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZCLIENT | Secure Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { 
+            background-color: #0b0b0b; 
+            color: #d4d4d4; 
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .login-card { 
+            border: 1px solid #222; 
+            padding: 40px; 
+            background: #141414; 
+            box-shadow: 0 10px 50px rgba(0,0,0,0.7); 
+            width: 350px; 
+            text-align: center; 
+            border-radius: 4px; 
+        }
+        h2 { font-weight: 200; letter-spacing: 4px; color: #fff; margin-bottom: 30px; text-transform: uppercase; }
+        input { 
+            width: 100%; padding: 12px; margin-bottom: 20px; 
+            background: #000; border: 1px solid #333; color: #fff; 
+            box-sizing: border-box; outline: none; 
+        }
+        input:focus { border-color: #555; }
+        button { 
+            width: 100%; padding: 12px; background: #fff; border: none; 
+            cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: 0.2s; 
+        }
+        button:hover { background: #bbb; }
+        .hidden { display: none; }
+        .status-msg { font-size: 11px; color: #555; margin-top: 15px; text-transform: uppercase; }
+        #error-msg { color: #ff4444; margin-bottom: 15px; font-size: 13px; min-height: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="auth-form" class="login-card">
+        <h2>ZCLIENT</h2>
+        <div id="error-msg"></div>
+        <input type="email" id="email" placeholder="EMAIL ADDRESS">
+        <input type="password" id="password" placeholder="PASSWORD">
+        <button id="login-btn" onclick="handleLogin()">AUTHENTICATE</button>
+        <p class="status-msg">SYSTEM STATUS: SECURE</p>
+    </div>
+
+    <div id="dashboard" class="login-card hidden">
+        <h2>AUTHORIZED</h2>
+        <p style="margin-bottom: 25px;">Welcome to the ZClient Dashboard.</p>
+        <button onclick="alert('Downloading ZClient.exe...')">DOWNLOAD SOFTWARE</button>
+        <br><br>
+        <button onclick="handleLogout()" style="background: transparent; color: #ff4444; border: 1px solid #444;">LOGOUT</button>
+    </div>
+
+    <script>
+        // Your specific Supabase Details from your screenshots
+        const SUPABASE_URL = 'https://bfddlxzuopacmxafdayn.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_dsNXgQktKqzg1T47_qBfWA_y3mxsHSD';
+        
+        // Initialize the connection
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-msg');
+            const btn = document.getElementById('login-btn');
+
+            // Reset UI
+            errorDiv.innerText = "";
+            btn.innerText = "VERIFYING...";
+
+            // Send request to your Supabase Database
+            const { data, error } = await _supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                errorDiv.innerText = "DENIED: " + error.message;
+                btn.innerText = "AUTHENTICATE";
+            } else {
+                // Success!
+                document.getElementById('auth-form').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+            }
+        }
+
+        async function handleLogout() {
+            await _supabase.auth.signOut();
+            location.reload(); // Refresh the page to show the login box again
+        }
+    </script>
+</body>
+</html>
