@@ -5,183 +5,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="XYPop-BA-QhxT_4kY_DWgxC23knXE4UK7dTLdCW4Cqo" />
     
-    <title>ZClient | The Most Powerful Utility for Minecraft</title>
-    <meta name="description" content="Undetectable by design. Built for players who play to win. ZClient is the ultimate 1.21.1 utility.">
+    <title>ZClient | Premium Minecraft Utility</title>
 
     <style>
         :root {
-            --primary: #6366f1; /* Prestige-style Purple/Blue */
-            --bg: #050508;
-            --card-bg: #0b0b12;
+            --primary: #7c3aed; /* Purple Theme */
+            --bg: #030303;
+            --card: #0a0a0a;
             --text: #ffffff;
-            --text-dim: #94a3b8;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* Background Glow Effect */
+        /* Animated Background */
         .glow {
             position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
             width: 100%;
-            height: 600px;
-            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            height: 100%;
+            background: radial-gradient(circle at 50% 30%, rgba(124, 58, 237, 0.1), transparent 70%);
             z-index: -1;
         }
 
-        nav {
-            width: 100%;
-            max-width: 1200px;
-            padding: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-sizing: border-box;
-        }
-
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
-
-        .hero {
-            text-align: center;
-            margin-top: 100px;
-            max-width: 800px;
-        }
-
         .hero h1 {
-            font-size: 4rem;
+            font-size: 5rem;
             margin: 0;
-            font-weight: 800;
-            background: linear-gradient(to bottom, #fff 0%, #94a3b8 100%);
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff, #444);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            color: var(--text-dim);
+            color: #888;
             font-size: 1.2rem;
-            margin: 20px 0 40px;
+            margin-bottom: 40px;
         }
 
-        /* The Login/Download Card */
-        .auth-container {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.05);
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { box-shadow: 0 0 20px var(--primary); transform: translateY(-2px); }
+
+        .btn-outline { background: transparent; color: white; border: 1px solid #333; }
+        .btn-outline:hover { border-color: white; }
+
+        /* Login Modal (Popup) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: var(--card);
             padding: 40px;
-            border-radius: 20px;
-            width: 400px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            width: 350px;
+            border: 1px solid #222;
+            text-align: center;
         }
 
         input {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             margin-bottom: 15px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
+            background: #000;
+            border: 1px solid #333;
             color: white;
-            outline: none;
+            border-radius: 5px;
             box-sizing: border-box;
         }
 
-        input:focus { border-color: var(--primary); }
-
-        .btn {
-            background: var(--primary);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 600;
+        .close-btn {
+            margin-top: 15px;
+            color: #555;
             cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
-            font-size: 1rem;
-        }
-
-        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
-
-        .features {
-            display: flex;
-            gap: 20px;
-            margin-top: 80px;
-            padding: 40px;
-        }
-
-        .feature-tag {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            padding: 5px 15px;
-            border-radius: 20px;
             font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: inline-block;
         }
 
         .hidden { display: none; }
-        #error-msg { color: #ff4b4b; margin-top: 15px; font-size: 0.9rem; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="glow"></div>
-    
-    <nav>
-        <div class="logo">ZCLIENT</div>
-        <div style="color: var(--text-dim);">1.21.11 Update available</div>
-    </nav>
 
     <div class="hero">
-        <span class="feature-tag">NEW TECHNOLOGY</span>
-        <h1>The most powerful<br>utility for Minecraft.</h1>
-        <p>Undetectable by design. Inside the game in 60 seconds.<br>Built for players who play to win.</p>
-
         <center>
-            <div class="auth-container">
-                <div id="auth-form">
-                    <input type="email" id="email" placeholder="Email address">
-                    <input type="password" id="password" placeholder="Password">
-                    <button class="btn" id="login-btn" onclick="handleLogin()">Get Started — Free</button>
-                    <div id="error-msg"></div>
-                </div>
-
-                <div id="dashboard" class="hidden">
-                    <h2 style="margin-top:0">Access Granted</h2>
-                    <p style="font-size: 0.9rem">Your license is active.</p>
-                    <button class="btn" onclick="window.location.href='YOUR_LINK'">Download ZClient.exe</button>
-                </div>
+            <h1>ZCLIENT</h1>
+            <p>The next generation of ghost clients.</p>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="window.location.href='YOUR_PAYMENT_LINK'">Buy Now — $9.99</button>
+                <button class="btn btn-outline" onclick="openModal()">Login</button>
             </div>
         </center>
     </div>
 
-    <div class="features">
-        <div style="text-align:left">
-            <span style="color:var(--primary)">✓</span> Fabric 1.21-1.21.11
-        </div>
-        <div style="text-align:left">
-            <span style="color:var(--primary)">✓</span> Windows 10+
-        </div>
-        <div style="text-align:left">
-            <span style="color:var(--primary)">✓</span> Instant Delivery
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Member Login</h2>
+            
+            <div id="auth-form">
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Password">
+                <button class="btn btn-primary" style="width:100%" id="login-btn" onclick="handleLogin()">Sign In</button>
+                <div id="error-msg" style="color:red; margin-top:10px; font-size:0.8rem;"></div>
+            </div>
+
+            <div id="dashboard" class="hidden">
+                <p style="color:#4ade80">Access Authorized!</p>
+                <button class="btn btn-primary" style="width:100%" onclick="window.location.href='YOUR_DOWNLOAD_LINK'">Download .EXE</button>
+            </div>
+
+            <div class="close-btn" onclick="closeModal()">Back to home</div>
         </div>
     </div>
 
     <script>
+        // Supabase Init
         const SUPABASE_URL = 'https://bfddlxzuopacmxafdayn.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_dsNXgQktKqzg1T47_qBfWA_y3mxsHSD'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
 
         async function handleLogin() {
             const email = document.getElementById('email').value;
@@ -191,17 +170,15 @@
 
             btn.innerText = "Verifying...";
             
-            const { data, error } = await _supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
+            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
 
             if (error) {
-                errorDiv.innerText = error.message;
-                btn.innerText = "Get Started — Free";
+                errorDiv.innerText = "Invalid credentials.";
+                btn.innerText = "Sign In";
             } else {
                 document.getElementById('auth-form').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('modal-title').innerText = "Welcome Back";
             }
         }
     </script>
